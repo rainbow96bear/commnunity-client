@@ -17,7 +17,8 @@
     "start": "concurrently \"yarn workspace client start\" \"yarn workspace admin start\""
   },
   "dependencies": {
-    "axios": "^1.7.2"
+    "axios": "^1.7.2",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0"
