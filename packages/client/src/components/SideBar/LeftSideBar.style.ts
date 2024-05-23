@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
 export const Box = styled.div`
-  width: 20%;
+  width: 10%;
 `;
