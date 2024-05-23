@@ -1,1 +1,3 @@
-export declare const sampleFunc: (str: string) => string;
+import React from "react";
+declare const SampleComponent: React.FC;
+export default SampleComponent;

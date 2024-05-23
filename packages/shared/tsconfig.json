@@ -5,7 +5,10 @@
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "baseUrl": "./dist"
   },
   "include": ["src"]
 }
