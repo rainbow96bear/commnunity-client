@@ -11,7 +11,7 @@ export const Box = styled.div`
 `;
 
 export const ContactInfo = styled.div`
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
 
   h3 {
     font-size: 1.5rem;
@@ -20,11 +20,14 @@ export const ContactInfo = styled.div`
   h4 {
     font-size: 1.2rem;
   }
-  p {
-    display: flex;
-    align-items: center;
-  }
   a {
     text-decoration: none;
+    border-radius: 100%;
+    img {
+      height: 35px;
+    }
   }
+`;
+export const ItemBox = styled.div`
+  display: flex;
 `;
