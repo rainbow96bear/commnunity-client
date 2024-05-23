@@ -36,6 +36,6 @@ function App() {
 export default App;
 
 const Main = styled.div`
-  min-width: 60%;
+  min-width: 80%;
   max-width: 100%;
 `;

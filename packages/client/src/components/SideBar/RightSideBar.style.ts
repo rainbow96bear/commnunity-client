@@ -2,5 +2,5 @@ import styled from "styled-components";
 
 export const Box = styled.div`
   box-sizing: border-box;
-  width: 20%;
+  width: 10%;
 `;
