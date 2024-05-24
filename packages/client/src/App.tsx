@@ -7,6 +7,7 @@ import LeftSideBar from "./components/SideBar/LeftSideBar";
 import RightSideBar from "./components/SideBar/RightSideBar";
 import Body from "./components/Body/Body";
 import "./App.css";
+import CategoryBar from "./components/CategoryBar/CategoryBar";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <></>
         </LeftSideBar>
         <Main>
+          <CategoryBar></CategoryBar>
           <Routes>
             {/* <Route path="/*" element={<User />} />
           <Route path="/messenger" element={<Messenger />} />
