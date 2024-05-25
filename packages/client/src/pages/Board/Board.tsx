@@ -1,21 +1,11 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Box,
-  Category,
-  CategoryBar,
-  Item,
-  SelectedItem,
-  ListHeader,
-  Number,
-  Title,
-  Writer,
-  ListItem,
-} from "./Board.style";
+import { Box, Category, CategoryBar, Item, SelectedItem } from "./Board.style";
 import { boardRootRouter } from "src/constant/Category";
 import { Moveto } from "shared/dist/CustomHooks/Moveto";
 import { FrontsPosts } from "src/constant/DummyPostList";
 import Post from "src/components/Post/Post";
+import PostList from "src/components/PostList/PostList";
 
 const Board = () => {
   const { category, skill, id } = useParams<{
@@ -46,30 +36,9 @@ const Board = () => {
             </Item>
           )
         )}
+        {/* fix : 더미데이터 전달 수정 필요 */}
       </CategoryBar>
-      <ListHeader>
-        <Number>No.</Number>
-        <Title>제목</Title>
-        <Writer>글쓴이</Writer>
-      </ListHeader>
-      {FrontsPosts.map((post, idx) => (
-        <ListItem key={idx}>
-          <Number>{post.id}</Number>
-          <Title
-            onClick={Moveto(
-              boardRootRouter +
-                "/" +
-                post.category +
-                "/" +
-                post.subCategory +
-                "/" +
-                post.id
-            )}>
-            {post.title}
-          </Title>
-          <Writer>{post.writer}</Writer>
-        </ListItem>
-      ))}
+      <PostList posts={FrontsPosts}></PostList>
     </Box>
   );
 };
