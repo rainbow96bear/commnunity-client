@@ -1,27 +1,26 @@
-// constants/categories.js
-export const rootRouter = "/board";
+export const boardRootRouter = "/board";
 export const categories = [
   {
     title: "Front's",
-    router: "/Fronts",
+    router: "/Front",
     subcategories: [
-      { title: "React", router: "/Fronts/React" },
-      { title: "Vue", router: "/Fronts/Vue" },
-      { title: "Angular", router: "/Fronts/Angular" },
+      { title: "React", router: "/Front/React" },
+      { title: "Vue", router: "/Front/Vue" },
+      { title: "Angular", router: "/Front/Angular" },
     ],
   },
   {
     title: "Back's",
-    router: "/Backs",
+    router: "/Back",
     subcategories: [
-      { title: "Golang", router: "/Backs/Golang" },
-      { title: "NodeJS", router: "/Backs/NodeJS" },
-      { title: "Java", router: "/Backs/Java" },
+      { title: "Golang", router: "/Back/Golang" },
+      { title: "NodeJS", router: "/Back/NodeJS" },
+      { title: "Java", router: "/Back/Java" },
     ], // 필요에 따라 추가
   },
   {
     title: "Blockchain's",
-    router: "/Blockchains",
+    router: "/Blockchain",
     subcategories: [], // 필요에 따라 추가
   },
 ];
