@@ -3,4 +3,7 @@
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  div {
+    box-sizing: border-box;
+  }
 }
