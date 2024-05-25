@@ -1,6 +1,6 @@
 import { Box, Items, Item, SubItem } from "./CategoryBar.style";
-import { rootRouter, categories } from "src/constant/Category";
-import { Moveto } from "shared/dist/customNavigate";
+import { boardRootRouter, categories } from "src/constant/Category";
+import { Moveto } from "shared/dist/CustomHooks/Moveto";
 
 const CategoryBar = () => {
   return (
@@ -8,13 +8,13 @@ const CategoryBar = () => {
       <Items>
         {categories.map((category, idx) => (
           <>
-            <Item key={idx} onClick={Moveto(rootRouter + category.router)}>
+            <Item key={idx} onClick={Moveto(boardRootRouter + category.router)}>
               {category.title}
             </Item>
             {category.subcategories.map((subcategory, subidx) => (
               <SubItem
                 key={subidx}
-                onClick={Moveto(rootRouter + subcategory.router)}>
+                onClick={Moveto(boardRootRouter + subcategory.router)}>
                 {subcategory.title}
               </SubItem>
             ))}

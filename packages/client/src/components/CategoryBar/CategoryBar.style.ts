@@ -3,10 +3,17 @@ import styled from "styled-components";
 export const Box = styled.div`
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  width: fit-content;
+
+  width: 100%;
+  height: fit-content;
   border: 1px solid lightgray;
   border-top: none;
+`;
+
+const truncateText = `
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Items = styled.div`
@@ -14,24 +21,30 @@ export const Items = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  box-sizing: border-box;
+
+  & > div {
+    cursor: pointer;
+    ${truncateText}
+    width: 100%;
+  }
 `;
 
 export const Item = styled.div`
   padding: 10px;
   width: 100%;
   font-size: 1.2rem;
-  font-weight: 550;
-  cursor: pointer;
+  font-weight: 700;
   border-top: 2px solid red;
-  box-sizing: border-box;
+
   text-align: left;
+  ${truncateText}
 `;
 
 export const SubItem = styled.div`
   padding: 10px 25px;
   width: 100%;
-  box-sizing: border-box;
+
   border-top: 1px solid lightgray;
   text-align: left;
+  ${truncateText}
 `;

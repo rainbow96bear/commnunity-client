@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Box = styled.div`
-  box-sizing: border-box;
   display: flex;
+  justify-content: center;
   width: 100%;
   padding: 30px;
   > div {
