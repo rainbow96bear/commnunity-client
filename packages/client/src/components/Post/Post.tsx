@@ -43,6 +43,7 @@ const Post: React.FC<Post> = ({ post }) => {
           fontSize={30}
           color={"lightblue"}
         />
+        {/* fix : 글쓰기 router 설정, MoveTo 지정 필요 */}
         <WriteButton>글쓰기</WriteButton>
       </FuctionBar>
     </Box>
