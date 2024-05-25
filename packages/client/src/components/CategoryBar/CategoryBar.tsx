@@ -3,6 +3,7 @@ import { boardRootRouter, categories } from "src/constant/Category";
 import { Moveto } from "shared/dist/CustomHooks/Moveto";
 
 const CategoryBar = () => {
+  // fix : MoveTo의 category.router를 constant에서 Category를 받고 DB에서 받은 subCategory로 교체
   return (
     <Box>
       <Items>

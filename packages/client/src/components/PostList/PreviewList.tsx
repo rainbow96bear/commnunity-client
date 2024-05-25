@@ -11,17 +11,18 @@ interface Post {
 }
 
 interface PreviewList {
+  category: string;
   posts: Post[];
 }
-const PreviewList: React.FC<PreviewList> = ({ posts }) => {
+const PreviewList: React.FC<PreviewList> = ({ category, posts }) => {
   return (
     <Box>
-      <h3>{posts.length > 0 ? posts[0].category : "Title"}'s</h3>
+      <h3>{category}'s</h3>
       {posts.map((post, index) => (
         <Item key={index}>
           <div
             onClick={Moveto(
-              boardRootRouter + "/" + post.category + "/" + post.subCategory
+              boardRootRouter + "/" + category + "/" + post.subCategory
             )}>
             {"[" + post.subCategory + "]"}
           </div>
@@ -30,7 +31,7 @@ const PreviewList: React.FC<PreviewList> = ({ posts }) => {
             onClick={Moveto(
               boardRootRouter +
                 "/" +
-                post.category +
+                category +
                 "/" +
                 post.subCategory +
                 "/" +

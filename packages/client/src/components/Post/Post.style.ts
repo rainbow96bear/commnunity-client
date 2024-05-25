@@ -40,4 +40,5 @@ export const WriteButton = styled.div`
   border: none;
   background: lightblue;
   color: white;
+  cursor: pointer;
 `;
