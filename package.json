@@ -6,6 +6,7 @@
   "author": "Kim Sung Jin <rainbow96bear@gmail.com>",
   "license": "MIT",
   "private": "true",
+  "proxy": "http://localhost:8000",
   "workspaces": [
     "packages/admin",
     "packages/client",
