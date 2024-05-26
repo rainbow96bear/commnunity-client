@@ -8,8 +8,8 @@ const CategoryBar = () => {
     <Box>
       <Items>
         {categories.map((category, idx) => (
-          <>
-            <Item key={idx} onClick={Moveto(boardRootRouter + category.router)}>
+          <div key={idx}>
+            <Item onClick={Moveto(boardRootRouter + category.router)}>
               {category.title}
             </Item>
             {category.subcategories.map((subcategory, subidx) => (
@@ -19,7 +19,7 @@ const CategoryBar = () => {
                 {subcategory.title}
               </SubItem>
             ))}
-          </>
+          </div>
         ))}
       </Items>
     </Box>
