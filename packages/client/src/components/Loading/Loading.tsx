@@ -1,18 +1,12 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { PacmanLoader } from "react-spinners";
 import { Box } from "./Loading.style";
 
 const Loading = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const from = localStorage.getItem("from");
-    if (from) {
-      localStorage.removeItem("from");
-      navigate(from, { replace: true });
-    }
-  }, [navigate]);
-
-  return <Box>로딩중</Box>;
+  return (
+    <Box>
+      <PacmanLoader color="#36d7b7"></PacmanLoader>
+    </Box>
+  );
 };
 
 export default Loading;

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "src/components/AuthContext/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Loading from "src/components/Loading/Loading";
+import { useAuth } from "src/hooks/useAuth";
 
 const LoginCallback = () => {
   const [code, setCode] = useState("");
@@ -14,18 +15,19 @@ const LoginCallback = () => {
         const param = {
           code,
         };
+        // fix : axios 요정 경로 지정
         const response = await axios.post(
           "http://localhost:8000/api/v1/auth/kakao/userinfo",
           param,
           {
+            withCredentials: true,
             headers: {
               "Content-Type": "application/json",
             },
           }
         );
-        // fix : login에 token 전달?
-        login("a");
-        console.log(response.data);
+        login(response.data.user);
+
         const from = localStorage.getItem("from") || "/";
         localStorage.removeItem("from");
         navigate(from, { replace: true });
@@ -50,7 +52,11 @@ const LoginCallback = () => {
     setCode(code);
   }, []);
 
-  return <div>로딩중</div>;
+  return (
+    <>
+      <Loading></Loading>
+    </>
+  );
 };
 
 export default LoginCallback;

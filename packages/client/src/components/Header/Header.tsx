@@ -1,19 +1,41 @@
-import { Moveto } from "shared/dist/CustomHooks/Moveto";
+import { useDispatch } from "react-redux";
+import { Box, FuncBox, LogButton, ProfileImg, Title } from "./Header.style";
 import logo from "../../assets/logo.png";
-import { Box, LoginButton, Title } from "./Header.style";
-import { useAuth } from "../AuthContext/AuthContext";
+import { useAuth } from "src/hooks/useAuth";
+import { AppDispatch } from "src/store";
+import { deleteUserInfo } from "src/store/slices/userInfo"; // 수정된 부분
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  // fix : 로그인 전 후에 따른 component render 작업 필요
-  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { userInfo, logout } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+  const handleLogout = () => {
+    dispatch(deleteUserInfo());
+    logout();
+    navigate("/");
+  };
+
   return (
     <Box>
-      <Title onClickCapture={Moveto("/")}>
+      <Title onClickCapture={() => navigate("/")}>
         <img src={logo} alt="logo" />
         <div className="text">IT's 놀이터</div>
       </Title>
-      <LoginButton onClick={Moveto("/login")}> 로그인 </LoginButton>
-      <LoginButton onClick={logout}> 로그아웃 </LoginButton>
+      {userInfo ? (
+        <FuncBox>
+          <ProfileImg onClick={() => navigate("/profile")}>
+            <img src={userInfo.profile_image!}></img>
+          </ProfileImg>
+          <LogButton onClick={handleLogout}> 로그아웃 </LogButton>
+        </FuncBox>
+      ) : (
+        <LogButton onClick={handleLogin}> 로그인 </LogButton>
+      )}
     </Box>
   );
 };

@@ -11,6 +11,8 @@ import CategoryBar from "./components/CategoryBar/CategoryBar";
 import Home from "./pages/Home/Home";
 import Board from "./pages/Board/Board";
 import PrivateRoutes from "./components/PrivateRoute/PrivateRoute";
+import NotFound from "./pages/NotFound/NotFound";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
                 element={<PrivateRoutes />}>
                 <Route path=":id/*" element={<Board />} />
               </Route>
+              <Route path="/profile" element={<Profile />}></Route>
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </MainBox>
         </Main>
