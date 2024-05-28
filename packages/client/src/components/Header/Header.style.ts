@@ -22,7 +22,7 @@ export const Title = styled.div`
   }
 `;
 
-export const LoginButton = styled.div`
+export const LogButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,5 +35,19 @@ export const LoginButton = styled.div`
 
   &: hover {
     background: lightblue;
+  }
+`;
+export const FuncBox = styled.div`
+  display: flex;
+`;
+export const ProfileImg = styled.div`
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  cursor: pointer;
+  & > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;

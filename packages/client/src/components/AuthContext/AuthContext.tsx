@@ -1,45 +1,38 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
-import { Moveto } from "shared/dist/CustomHooks/Moveto";
+import React, { ReactNode, createContext, useEffect, useState } from "react";
+import { AuthContextType } from "src/types/AuthContext";
+import { UserInfo } from "src/types/UserInfo";
 
 interface AuthContextProps {
   children: ReactNode;
 }
 
-interface AuthContextType {
-  accessToken: string | null;
-  login: (token: string) => void;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(
-    localStorage.getItem("accessToken")
-  );
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(() => {
+    const storedUserInfo = localStorage.getItem("userInfo");
+    if (storedUserInfo) {
+      return JSON.parse(storedUserInfo) as UserInfo;
+    } else {
+      return null;
+    }
+  });
 
-  const login = (token: string) => {
-    setAccessToken(token);
-    localStorage.setItem("accessToken", token);
+  const login = (userInfo: UserInfo) => {
+    setUserInfo(userInfo);
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
   };
 
   const logout = () => {
-    setAccessToken(null);
-    localStorage.removeItem("accessToken");
-    Moveto("/");
+    setUserInfo(null);
+    localStorage.removeItem("userInfo");
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, login, logout }}>
+    <AuthContext.Provider value={{ userInfo, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };
