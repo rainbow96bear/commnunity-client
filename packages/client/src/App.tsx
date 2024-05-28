@@ -10,6 +10,7 @@ import "./App.css";
 import CategoryBar from "./components/CategoryBar/CategoryBar";
 import Home from "./pages/Home/Home";
 import Board from "./pages/Board/Board";
+import PrivateRoutes from "./components/PrivateRoute/PrivateRoute";
 
 function App() {
   return (
@@ -26,10 +27,12 @@ function App() {
           <MainBox>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/board/:category?/:skill?" element={<Board />} />
               <Route
-                path="/board/:category/:skill?/:id?/*"
-                element={<Board></Board>}
-              />
+                path="/board/:category/:skill/*"
+                element={<PrivateRoutes />}>
+                <Route path=":id/*" element={<Board />} />
+              </Route>
             </Routes>
           </MainBox>
         </Main>
