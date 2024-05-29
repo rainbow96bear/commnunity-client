@@ -11,8 +11,8 @@ import {
 import { RootState } from "src/store";
 
 const Profile = () => {
-  // useSelector를 사용하여 프로필 정보 가져오기
-  const userProfile = useSelector((state: RootState) => state.userInfo.user);
+  // useSelector를 사용하여 userInfo 상태 가져오기
+  const userProfile = useSelector((state: RootState) => state.userInfo);
 
   // 프로필 정보 상태 관리
   const [profile, setProfile] = useState(userProfile);
@@ -24,8 +24,13 @@ const Profile = () => {
   const handleSave = () => {
     // 저장 로직 구현
     alert("프로필이 성공적으로 저장되었습니다!");
-    setIsEditMode(false); // 수정 모드 종료
+    setIsEditMode(false);
   };
+
+  // 프로필 정보가 변경되면 useState 업데이트
+  React.useEffect(() => {
+    setProfile(userProfile);
+  }, [userProfile]);
 
   return (
     <Box>
