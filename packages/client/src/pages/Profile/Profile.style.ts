@@ -1,55 +1,103 @@
 import styled from "styled-components";
 
 export const Box = styled.div`
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  position: relative;
+`;
+
+export const ItemBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 10px;
+  & > label {
+    display: flex;
+    align-items: left;
+  }
 `;
 
 export const ProfileImage = styled.img`
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: 10%;
   margin-bottom: 20px;
+`;
+
+export const ProfileImagePreview = styled(ProfileImage)`
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    filter: brightness(0.8);
+  }
 `;
 
 export const Nickname = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 10px;
+  text-align: left;
+`;
+
+export const WalletLabel = styled.h3`
+  font-size: 1rem;
+  margin-bottom: 5px;
+  text-align: left;
 `;
 
 export const WalletAddress = styled.p`
   font-size: 1rem;
+  font-weight: 650;
   margin-bottom: 20px;
+  text-align: left;
+  color: lightgray;
 `;
 
-export const EditButton = styled.button`
+export const TextInput = styled.input`
+  min-width: 300px;
+  max-width: 50%;
+  height: 30px;
+  font-size: 1.1rem;
+  font-weight: 650;
+  border: none;
+  border-bottom: 1px solid black;
+`;
+
+export const EditBox = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+export const Button = styled.button`
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
+`;
+
+export const CancleButton = styled(Button)`
+  background-color: #007bff;
   &:hover {
     background-color: #0056b3;
   }
 `;
-
-export const SaveButton = styled.button`
-  padding: 10px 20px;
-  font-size: 1rem;
+export const SaveButton = styled(Button)`
   background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
   &:hover {
     background-color: #218838;
+  }
+`;
+export const EditButton = styled(Button)`
+  background-color: #007bff;
+  &:hover {
+    background-color: #0056b3;
   }
 `;

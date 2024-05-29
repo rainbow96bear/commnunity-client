@@ -35,7 +35,7 @@ function App() {
                 element={<PrivateRoutes />}>
                 <Route path=":id/*" element={<Board />} />
               </Route>
-              <Route path="/profile" element={<Profile />}></Route>
+              <Route path="/profile/:id" element={<Profile />}></Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </MainBox>
