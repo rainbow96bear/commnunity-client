@@ -2,27 +2,27 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserInfo } from "src/types/UserInfo";
 
-// UserInfo 타입이 포함된 상태 타입 정의
 interface UserState {
   userInfo: UserInfo;
 }
 
-// initialState 수정
-const initialState: UserInfo = {
-  platform: "",
-  id: "",
-  nickname: "",
-  profile_image: "", // 기본 이미지로 수정
-  wallet: "",
+const initialState: UserState = {
+  userInfo: {
+    id: "",
+    nickname: "",
+    profile_image: "",
+    wallet: "",
+  },
 };
 
-export const fetchSessionUserInfo = createAsyncThunk<UserInfo>(
+export const fetchSessionUserInfo = createAsyncThunk<UserState, string>(
   "userInfo/fetchSessionUserInfo",
-  async () => {
+  async (id) => {
     const response = await axios.get<UserState>("/api/v1/userinfo", {
       withCredentials: true,
+      data: { id },
     });
-    return response.data.userInfo;
+    return response.data;
   }
 );
 
@@ -31,16 +31,16 @@ const userInfoSlice = createSlice({
   initialState,
   reducers: {
     updateUserInfo(state, action: PayloadAction<UserState>) {
-      state = action.payload.userInfo; // 수정된 부분
+      state.userInfo = action.payload.userInfo;
     },
     deleteUserInfo(state) {
-      state = initialState; // 수정된 부분
+      state.userInfo = initialState.userInfo;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSessionUserInfo.fulfilled, (state, action) => {
-        state = action.payload; // 수정된 부분
+        state.userInfo = action.payload.userInfo;
       })
       .addCase(fetchSessionUserInfo.rejected, (state, action) => {
         console.error("Error fetching session user info:", action.error);

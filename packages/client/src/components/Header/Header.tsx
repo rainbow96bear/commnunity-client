@@ -1,15 +1,16 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, FuncBox, LogButton, ProfileImg, Title } from "./Header.style";
 import logo from "../../assets/logo.png";
 import { useAuth } from "src/hooks/useAuth";
-import { AppDispatch } from "src/store";
+import { AppDispatch, RootState } from "src/store";
 import { deleteUserInfo } from "src/store/slices/userInfo"; // 수정된 부분
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { userInfo, logout } = useAuth();
+  const { logout } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
+  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
 
   const handleLogin = () => {
     navigate("/login");
@@ -28,7 +29,7 @@ const Header = () => {
       </Title>
       {userInfo ? (
         <FuncBox>
-          <ProfileImg onClick={() => navigate("/profile")}>
+          <ProfileImg onClick={() => navigate(`/profile/${userInfo.id}`)}>
             <img src={userInfo.profile_image!}></img>
           </ProfileImg>
           <LogButton onClick={handleLogout}> 로그아웃 </LogButton>
