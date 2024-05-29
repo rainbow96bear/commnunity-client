@@ -15,9 +15,8 @@ const LoginCallback = () => {
         const param = {
           code,
         };
-        // fix : axios 요정 경로 지정
         const response = await axios.post(
-          "http://localhost:8000/api/v1/auth/kakao/userinfo",
+          "/api/v1/auth/kakao/userinfo",
           param,
           {
             withCredentials: true,
@@ -26,7 +25,7 @@ const LoginCallback = () => {
             },
           }
         );
-        login(response.data.user);
+        login(response.data.userInfo);
 
         const from = localStorage.getItem("from") || "/";
         localStorage.removeItem("from");
