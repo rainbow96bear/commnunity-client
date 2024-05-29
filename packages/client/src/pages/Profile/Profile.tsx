@@ -35,8 +35,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (id && !userInfo.id) {
-        const result = await dispatch(fetchSessionUserInfo(id));
-        console.log(result.payload);
+        await dispatch(fetchSessionUserInfo(id));
       }
     };
     fetchUserInfo();
@@ -89,7 +88,6 @@ const Profile = () => {
       alert("프로필 저장에 실패했습니다. 다시 시도해주세요.");
     }
   };
-  console.log(userInfo?.profile_image);
   return (
     <Box>
       {isEditMode ? (

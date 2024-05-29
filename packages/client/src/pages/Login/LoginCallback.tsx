@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loading from "src/components/Loading/Loading";
-import { useAuth } from "src/hooks/useAuth";
+import { AppDispatch } from "src/store";
+import { fetchSessionUserInfo } from "src/store/slices/userInfo";
 
 const LoginCallback = () => {
   const [code, setCode] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
 
   const fetchLogin = useCallback(
     async (code: string) => {
@@ -15,18 +17,15 @@ const LoginCallback = () => {
         const param = {
           code,
         };
-        const response = await axios.post(
-          "/api/v1/auth/kakao/userinfo",
-          param,
-          {
+        const response = (
+          await axios.post("/api/v1/auth/kakao/userinfo", param, {
             withCredentials: true,
             headers: {
               "Content-Type": "application/json",
             },
-          }
-        );
-        login(response.data.userInfo);
-
+          })
+        ).data;
+        await dispatch(fetchSessionUserInfo(response.userInfo.id));
         const from = localStorage.getItem("from") || "/";
         localStorage.removeItem("from");
         navigate(from, { replace: true });
