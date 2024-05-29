@@ -10,7 +10,7 @@ const initialState: UserState = {
   userInfo: {
     id: "",
     nickname: "",
-    profile_image: "",
+    profile_image: process.env.REACT_APP_BASE_PROFILE_IMG,
     wallet: "",
   },
 };
@@ -18,9 +18,8 @@ const initialState: UserState = {
 export const fetchSessionUserInfo = createAsyncThunk<UserState, string>(
   "userInfo/fetchSessionUserInfo",
   async (id) => {
-    const response = await axios.get<UserState>("/api/v1/userinfo", {
+    const response = await axios.get<UserState>(`/api/v1/userinfo/${id}`, {
       withCredentials: true,
-      data: { id },
     });
     return response.data;
   }
@@ -32,9 +31,11 @@ const userInfoSlice = createSlice({
   reducers: {
     updateUserInfo(state, action: PayloadAction<UserState>) {
       state.userInfo = action.payload.userInfo;
+      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
     deleteUserInfo(state) {
       state.userInfo = initialState.userInfo;
+      localStorage.removeItem("userInfo");
     },
   },
   extraReducers: (builder) => {

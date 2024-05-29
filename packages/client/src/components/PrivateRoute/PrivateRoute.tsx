@@ -1,11 +1,12 @@
+import { useSelector } from "react-redux";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "src/hooks/useAuth";
+import { RootState } from "src/store";
 
 const PrivateRoutes: React.FC = () => {
-  const { userInfo } = useAuth();
+  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
   const location = useLocation();
 
-  return userInfo ? (
+  return userInfo.id != "" ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} />
