@@ -14,8 +14,18 @@ export const Box = styled.div`
 export const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 5px;
+  & > label {
+    display: flex;
+    align-items: left;
+  }
+`;
+
+export const ItemBoxUnderLine = styled(ItemBox)`
+  display: flex;
+  flex-direction: column;
   border-bottom: 1px solid lightgray;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   & > label {
     display: flex;
     align-items: left;
@@ -39,10 +49,30 @@ export const ProfileImagePreview = styled(ProfileImage)`
   }
 `;
 
-export const Nickname = styled.h2`
+const NicknameStyle = `
+  // margin: 20px 0px 10px 0px;
   font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-weight: 700;
+  // margin-bottom: 10px;
   text-align: left;
+`;
+export const TextInput = styled.input`
+  min-width: 300px;
+  max-width: 50%;
+  height: 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-bottom: 1px solid black;
+  // padding-bottom: 20px;
+`;
+
+export const Nickname = styled.div`
+  ${NicknameStyle}
+`;
+
+export const NicknameInput = styled(TextInput)`
+  ${NicknameStyle}
 `;
 
 export const WalletLabel = styled.h3`
@@ -51,22 +81,19 @@ export const WalletLabel = styled.h3`
   text-align: left;
 `;
 
-export const WalletAddress = styled.p`
+const WalletAddressStyle = `
   font-size: 1rem;
   font-weight: 650;
-  margin-bottom: 20px;
+  margin: 16px 0px 0px 0px;
   text-align: left;
-  color: lightgray;
 `;
 
-export const TextInput = styled.input`
-  min-width: 300px;
-  max-width: 50%;
-  height: 30px;
-  font-size: 1.1rem;
-  font-weight: 650;
-  border: none;
-  border-bottom: 1px solid black;
+export const WalletAddress = styled.div`
+  ${WalletAddressStyle}
+`;
+
+export const WalletInput = styled(TextInput)`
+  ${WalletAddressStyle}
 `;
 
 export const EditBox = styled.div`

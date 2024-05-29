@@ -14,6 +14,9 @@ import {
   TextInput,
   ProfileImagePreview,
   EditBox,
+  ItemBoxUnderLine,
+  NicknameInput,
+  WalletInput,
 } from "./Profile.style";
 import { AppDispatch, RootState } from "src/store";
 import {
@@ -111,7 +114,7 @@ const Profile = () => {
                 style={{ display: "none" }}
               />
             </label>
-            <TextInput
+            <NicknameInput
               type="text"
               name="nickname"
               placeholder="닉네임을 입력해주세요"
@@ -121,7 +124,7 @@ const Profile = () => {
           </ItemBox>
           <ItemBox>
             <WalletLabel>Wallet Address</WalletLabel>
-            <TextInput
+            <WalletInput
               type="text"
               name="wallet"
               placeholder="wallet 주소를 입력해주세요"
@@ -132,16 +135,16 @@ const Profile = () => {
         </>
       ) : (
         <>
-          <ItemBox>
+          <ItemBoxUnderLine>
             <ProfileImage src={userInfo?.profile_image} alt="프로필 이미지" />
             <Nickname>{userInfo?.nickname}</Nickname>
-          </ItemBox>
-          <ItemBox>
+          </ItemBoxUnderLine>
+          <ItemBoxUnderLine>
             <WalletLabel>Wallet Address</WalletLabel>
             <WalletAddress>
               {userInfo?.wallet || "wallet 주소를 추가해주세요"}
             </WalletAddress>
-          </ItemBox>
+          </ItemBoxUnderLine>
         </>
       )}
 
