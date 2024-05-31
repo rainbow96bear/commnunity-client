@@ -39,7 +39,3 @@ export const SelectedItem = styled(Item)`
   font-weight: bold;
   color: black;
 `;
-
-export const FuncBar = styled.div`
-  margin-left: auto;
-`;

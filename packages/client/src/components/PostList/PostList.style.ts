@@ -4,6 +4,7 @@ export const Box = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
   & > div {
     display: flex;
     flex-wrap: wrap;
@@ -29,6 +30,7 @@ export const Title = styled.div`
 
 export const Writer = styled.div`
   flex: 2;
+  text-align: center;
   ${truncateText}
 `;
 
