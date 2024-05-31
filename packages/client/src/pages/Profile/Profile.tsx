@@ -11,7 +11,6 @@ import {
   SaveButton,
   CancleButton,
   ItemBox,
-  TextInput,
   ProfileImagePreview,
   EditBox,
   ItemBoxUnderLine,
@@ -19,30 +18,39 @@ import {
   WalletInput,
 } from "./Profile.style";
 import { AppDispatch, RootState } from "src/store";
-import {
-  fetchSessionUserInfo,
-  updateUserInfo,
-} from "src/store/slices/userInfo";
+import { updateUserInfo } from "src/store/slices/userInfo";
 import axios from "axios";
+import { UserInfo } from "src/types/UserInfo";
 
 const Profile = () => {
   const { id } = useParams();
+  const LoginUserInfo = useSelector(
+    (state: RootState) => state.userInfo.userInfo
+  );
   const dispatch = useDispatch<AppDispatch>();
-
-  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [editedProfileImg, setEditedProfileImg] = useState<File | null>(null);
-  const [editedNickname, setEditedNickname] = useState(userInfo.nickname);
-  const [editedWallet, setEditedWallet] = useState(userInfo.wallet);
+  const [editedNickname, setEditedNickname] = useState<string>("");
+  const [editedWallet, setEditedWallet] = useState<string>("");
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      if (id && !userInfo.id) {
-        await dispatch(fetchSessionUserInfo(id));
-      }
+      const response = (
+        await axios.get(
+          process.env.REACT_APP_API_VERSION + `/userinfos/${id}`,
+          {
+            withCredentials: true,
+          }
+        )
+      ).data;
+      const resUserInfo = response.userInfo;
+      setUserInfo(resUserInfo);
+      setEditedNickname(resUserInfo.nickname);
+      setEditedWallet(resUserInfo.wallet);
     };
     fetchUserInfo();
-  }, [dispatch, id, userInfo.id]);
+  }, [dispatch, id]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -52,16 +60,26 @@ const Profile = () => {
   };
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEditedNickname(e.target.value);
+    const newNickname = e.target.value;
+    if (newNickname.length <= 10) {
+      setEditedNickname(newNickname);
+    }
   };
 
   const handleWalletChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEditedWallet(e.target.value);
+    const newWallet = e.target.value;
+    if (newWallet.length <= 42) {
+      setEditedWallet(newWallet);
+    }
   };
 
   const handleSave = async () => {
     if (!editedNickname) {
       alert("닉네임을 입력해주세요.");
+      return;
+    }
+    if (!editedWallet) {
+      alert("지갑 주소를 입력해주세요.");
       return;
     }
     const formData = new FormData();
@@ -70,20 +88,22 @@ const Profile = () => {
       formData.append("profile_image", editedProfileImg);
     }
 
-    if (editedNickname != undefined) {
-      formData.append("nickname", editedNickname);
-    }
-    if (editedWallet != undefined) {
-      formData.append("wallet", editedWallet);
-    }
+    formData.append("nickname", editedNickname);
+    formData.append("wallet", editedWallet);
     formData.append("id", id!);
 
     try {
-      const result = await axios.patch(`/api/v1/userinfo`, formData, {
-        withCredentials: true,
-      });
-
-      dispatch(updateUserInfo(result.data));
+      const result = (
+        await axios.put(
+          process.env.REACT_APP_API_VERSION + `/userinfos/${id}`,
+          formData,
+          {
+            withCredentials: true,
+          }
+        )
+      ).data;
+      dispatch(updateUserInfo(result.userInfo));
+      setUserInfo(result.userInfo);
       alert("프로필이 성공적으로 저장되었습니다!");
       setIsEditMode(false);
     } catch (error) {
@@ -91,6 +111,7 @@ const Profile = () => {
       alert("프로필 저장에 실패했습니다. 다시 시도해주세요.");
     }
   };
+
   return (
     <Box>
       {isEditMode ? (
@@ -147,19 +168,21 @@ const Profile = () => {
           </ItemBoxUnderLine>
         </>
       )}
-
-      <EditBox>
-        {isEditMode ? (
-          <>
-            <CancleButton onClick={() => setIsEditMode(false)}>
-              취소
-            </CancleButton>
-            <SaveButton onClick={handleSave}>저장</SaveButton>
-          </>
-        ) : (
-          <EditButton onClick={() => setIsEditMode(true)}>수정</EditButton>
-        )}
-      </EditBox>
+      {/* fix : id 값과 로그인 된 id 가 같으면 아래 내용을 띄운다 */}
+      {LoginUserInfo.id == userInfo?.id && (
+        <EditBox>
+          {isEditMode ? (
+            <>
+              <CancleButton onClick={() => setIsEditMode(false)}>
+                취소
+              </CancleButton>
+              <SaveButton onClick={handleSave}>저장</SaveButton>
+            </>
+          ) : (
+            <EditButton onClick={() => setIsEditMode(true)}>수정</EditButton>
+          )}
+        </EditBox>
+      )}
     </Box>
   );
 };

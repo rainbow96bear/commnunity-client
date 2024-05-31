@@ -1,4 +1,4 @@
-import { Moveto } from "shared/dist/CustomHooks/Moveto";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   ListHeader,
@@ -24,6 +24,7 @@ interface PostsList {
 }
 
 const PostList: React.FC<PostsList> = ({ posts }) => {
+  const navigate = useNavigate();
   return (
     <Box>
       <ListHeader>
@@ -35,15 +36,17 @@ const PostList: React.FC<PostsList> = ({ posts }) => {
         <ListItem key={idx}>
           <Number>{post.id}</Number>
           <Title
-            onClick={Moveto(
-              boardRootRouter +
-                "/" +
-                post.category +
-                "/" +
-                post.subCategory +
-                "/" +
-                post.id
-            )}>
+            onClick={() =>
+              navigate(
+                boardRootRouter +
+                  "/" +
+                  post.category +
+                  "/" +
+                  post.subCategory +
+                  "/" +
+                  post.id
+              )
+            }>
             {post.title}
           </Title>
           <Writer>{post.writer}</Writer>

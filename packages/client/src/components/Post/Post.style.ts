@@ -18,8 +18,19 @@ export const Info = styled.div`
   display: flex;
   justify-content: space-between;
   & > div:first-child {
+    display: flex;
+    justify-content: left;
     cursor: pointer;
     color: blue;
+    width: 15%;
+  }
+  &>div: nth-child(2) {
+    width: 70%;
+  }
+  &>div: last-child {
+    display: flex;
+    justify-content: right;
+    width: 15%;
   }
 `;
 export const ContentBox = styled.div`
@@ -30,15 +41,4 @@ export const FuctionBar = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
-`;
-
-export const WriteButton = styled.div`
-  margin-left: 10px;
-  padding: 5px;
-  font-weight: bold;
-  border-radius: 5px;
-  border: none;
-  background: lightblue;
-  color: white;
-  cursor: pointer;
 `;

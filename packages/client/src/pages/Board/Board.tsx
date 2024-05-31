@@ -1,11 +1,22 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Category, CategoryBar, Item, SelectedItem } from "./Board.style";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import {
+  Box,
+  Category,
+  CategoryBar,
+  FuncBar,
+  Item,
+  SelectedItem,
+} from "./Board.style";
 import { boardRootRouter } from "src/constant/Category";
-import { Moveto } from "shared/dist/CustomHooks/Moveto";
 import { FrontsPosts } from "src/constant/DummyPostList";
-import Post from "src/components/Post/Post";
 import PostList from "src/components/PostList/PostList";
+import { RootState } from "src/store";
+import Post from "src/components/Post/Post";
+import { Post as PostType } from "src/types/Post";
+import PostButton from "src/components/Buttons/PostButton";
 
 const Board = () => {
   const { category, skill, id } = useParams<{
@@ -13,32 +24,71 @@ const Board = () => {
     skill?: string;
     id?: string;
   }>();
-  const [router, setRouter] = useState(boardRootRouter + "/" + category + "/");
-  const skills = ["React", "Vue", "Angular"];
+  const navigate = useNavigate();
+  const router = boardRootRouter + "/" + category + "/";
+  const [skills, setSkills] = useState<string[]>([]);
+  const [post, setPost] = useState<PostType | null>(null);
+
+  const categories = useSelector(
+    (state: RootState) => state.category.categories
+  );
+
+  useEffect(() => {
+    const selectedCategory = categories.find(
+      (cat) => cat.category === category
+    );
+    if (selectedCategory) {
+      setSkills(selectedCategory.subcategories.map((sub) => sub.subcategory));
+    }
+  }, [category, categories]);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = (
+          await axios.get(`${process.env.REACT_APP_API_VERSION}/posts/${id}`, {
+            withCredentials: true,
+          })
+        ).data;
+        setPost(response);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+        setPost(null);
+      }
+    };
+    if (id !== undefined) {
+      fetchPost();
+    }
+  }, [id]);
+
   return (
     <Box>
-      {/* fix : id 값으로 확인하는 것이 아닌 DB에서 받은 값이 있는가로 수정 필요 */}
-      {id != undefined && <Post post={FrontsPosts[0]}></Post>}
+      {id !== undefined && post && <Post post={post} />}
       <Category>{category + "'s"}</Category>
       <CategoryBar>
         {[undefined, ...skills].map((skillName, idx) =>
           skill === skillName ? (
             <SelectedItem
               key={idx}
-              onClick={Moveto(skillName ? router + skillName : router)}>
+              onClick={() => navigate(skillName ? router + skillName : router)}>
               {skillName || "전체"}
             </SelectedItem>
           ) : (
             <Item
               key={idx}
-              onClick={Moveto(skillName ? router + skillName : router)}>
+              onClick={() => navigate(skillName ? router + skillName : router)}>
               {skillName || "전체"}
             </Item>
           )
         )}
-        {/* fix : 더미데이터 전달 수정 필요 */}
       </CategoryBar>
-      <PostList posts={FrontsPosts}></PostList>
+      <PostList posts={FrontsPosts} />
+      <FuncBar>
+        <PostButton
+          text={"글쓰기"}
+          onClick={() => navigate("/board/newpost")}
+        />
+      </FuncBar>
     </Box>
   );
 };

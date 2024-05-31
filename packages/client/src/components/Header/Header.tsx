@@ -4,12 +4,12 @@ import logo from "../../assets/logo.png";
 import { AppDispatch, RootState } from "src/store";
 import { deleteUserInfo } from "src/store/slices/userInfo";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-
   const handleLogin = () => {
     navigate("/login");
   };
@@ -17,8 +17,9 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(deleteUserInfo());
     navigate("/");
+    // window.location.href = "http://localhost:3000";
   };
-
+  useEffect(() => {}, [userInfo]);
   return (
     <Box>
       <Title onClickCapture={() => navigate("/")}>

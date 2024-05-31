@@ -1,4 +1,4 @@
-export const boardRootRouter = "/board";
+export const boardRootRouter = "/board/posts";
 export const categories = [
   {
     title: "Front's",

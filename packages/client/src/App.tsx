@@ -13,8 +13,17 @@ import Board from "./pages/Board/Board";
 import PrivateRoutes from "./components/PrivateRoute/PrivateRoute";
 import NotFound from "./pages/NotFound/NotFound";
 import Profile from "./pages/Profile/Profile";
+import Search from "./pages/Search/Search";
+import WritePost from "./pages/WritePost/WritePost";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
 
-function App() {
+const App = () => {
+  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
+  useEffect(() => {
+    // console.log(userInfo);
+  }, [userInfo]);
   return (
     <div className="App">
       <Header />
@@ -24,31 +33,38 @@ function App() {
         </LeftSideBar>
         <Main>
           <CategoryBox>
-            <CategoryBar></CategoryBar>
+            <CategoryBar />
           </CategoryBox>
           <MainBox>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/board/:category?/:skill?" element={<Board />} />
+              <Route path="/board/posts" element={<NotFound />} />
               <Route
-                path="/board/:category/:skill/*"
-                element={<PrivateRoutes />}>
-                <Route path=":id/*" element={<Board />} />
+                path="/board/posts/:category/:skill?"
+                element={<Board />}
+              />
+              <Route element={<PrivateRoutes />}>
+                <Route
+                  path="/board/posts/:category/:skill/:id"
+                  element={<Board />}
+                />
+                <Route path="/board/newpost" element={<WritePost />} />
+                <Route path="/board/editpost/:postId" element={<WritePost />} />
+                <Route path="/profile/:id" element={<Profile />} />
               </Route>
-              <Route path="/profile/:id" element={<Profile />}></Route>
+              <Route path="/search" element={<Search />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </MainBox>
         </Main>
-
         <RightSideBar>
           <></>
         </RightSideBar>
       </Body>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;
 
@@ -61,7 +77,8 @@ const Main = styled.div`
 const CategoryBox = styled.div`
   width: 140px;
 `;
+
 const MainBox = styled.div`
   width: 100%;
-  padding: 0px 20px;
+  margin: 0px 20px;
 `;
