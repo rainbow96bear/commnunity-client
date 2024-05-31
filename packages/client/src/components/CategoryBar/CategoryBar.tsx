@@ -1,35 +1,21 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Box, Items, Item, SubItem } from "./CategoryBar.style";
 import { boardRootRouter } from "src/constant/Category";
-import { useEffect } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { updateCategories } from "src/store/slices/category";
 import { RootState } from "src/store";
-import { useNavigate } from "react-router-dom";
+import useFetchCategory from "src/hooks/useFetchCategories";
+import useMoveto from "";
 
 const CategoryBar = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const moveto = useMoveto();
+  const fetchCategories = useFetchCategory();
   const categories = useSelector(
     (state: RootState) => state.category.categories
   );
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = (
-          await axios.get(`${process.env.REACT_APP_API_VERSION}/categories`, {
-            withCredentials: true,
-          })
-        ).data;
-        dispatch(updateCategories(response.category));
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
     fetchCategories();
-  }, [dispatch]);
+  }, [fetchCategories]);
 
   return (
     <Box>
@@ -37,16 +23,14 @@ const CategoryBar = () => {
         {categories.map((category, idx) => (
           <div key={idx}>
             <Item
-              onClick={() =>
-                navigate(boardRootRouter + "/" + category.category)
-              }>
+              onClick={() => moveto(boardRootRouter + "/" + category.category)}>
               {category.category}
             </Item>
             {category.subcategories.map((subcategory, subidx) => (
               <SubItem
                 key={subidx}
                 onClick={() =>
-                  navigate(
+                  moveto(
                     boardRootRouter +
                       "/" +
                       category.category +
