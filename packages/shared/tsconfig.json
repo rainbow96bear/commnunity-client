@@ -3,11 +3,13 @@
     "target": "ES5",
     "module": "CommonJS",
     "declaration": true,
+    "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
     "baseUrl": "."
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
