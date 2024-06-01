@@ -9,25 +9,32 @@ import {
   Item,
   SelectedItem,
 } from "./Board.style";
-import { boardRootRouter } from "src/constant/Category";
 import PostList from "src/components/PostList/PostList";
 import { RootState } from "src/store";
 import Post from "src/components/Post/Post";
 import PostButton from "src/components/Buttons/PostButton";
-import { useGetPost } from "src/hooks/usePost";
-import { PostType } from "src/constant";
+import { useGetPost, useGetPostList } from "src/hooks/usePost";
+import { PostType, PostsByCategory } from "src/types";
+import { postRoute } from "src/constant";
+import { useQuery } from "src/hooks/useQuery";
 
 const Board = () => {
   const getPost = useGetPost();
-  const { category, skill, postId } = useParams<{
+  const getPostList = useGetPostList();
+
+  const { category, subcategory, postId } = useParams<{
     category: string;
-    skill?: string;
+    subcategory?: string;
     postId?: string;
   }>();
   const navigate = useNavigate();
-  const router = boardRootRouter + "/" + category + "/";
-  const [skills, setSkills] = useState<string[]>([]);
+  const [subcategories, setSubcategories] = useState<string[]>([]);
   const [post, setPost] = useState<PostType | null>(null);
+  const [postList, setPostList] = useState<PostsByCategory>({});
+  const query = useQuery();
+  const page = query.get("p");
+
+  const router = `${postRoute}/${category}`;
 
   const categories = useSelector(
     (state: RootState) => state.category.categories
@@ -38,14 +45,26 @@ const Board = () => {
       (cat) => cat.category === category
     );
     if (selectedCategory) {
-      setSkills(selectedCategory.subcategories.map((sub) => sub.subcategory));
+      setSubcategories(
+        selectedCategory.subcategories.map((sub) => sub.subcategory)
+      );
     }
   }, [category, categories]);
 
   useEffect(() => {
+    const fetchPosts = async () => {
+      const list = await getPostList(category, subcategory);
+      if (list) {
+        setPostList(list);
+      }
+    };
+    fetchPosts();
+  }, [category, subcategory]);
+
+  useEffect(() => {
     const fetchPost = async () => {
-      if (postId) {
-        const post = await getPost(postId);
+      if (category && subcategory && postId) {
+        const post = await getPost(category, subcategory, postId);
         setPost(post);
       }
     };
@@ -57,24 +76,33 @@ const Board = () => {
       {postId !== undefined && post && <Post post={post} />}
       <Category>{category + "'s"}</Category>
       <CategoryBar>
-        {[undefined, ...skills].map((skillName, idx) =>
-          skill === skillName ? (
+        {[undefined, ...subcategories].map((subcategoryName, idx) =>
+          subcategory == subcategoryName ? (
             <SelectedItem
               key={idx}
-              onClick={() => navigate(skillName ? router + skillName : router)}>
-              {skillName || "전체"}
+              onClick={() =>
+                navigate(
+                  subcategoryName ? `${router}/${subcategoryName}` : `${router}`
+                )
+              }>
+              {subcategoryName || "전체"}
             </SelectedItem>
           ) : (
             <Item
               key={idx}
-              onClick={() => navigate(skillName ? router + skillName : router)}>
-              {skillName || "전체"}
+              onClick={() =>
+                navigate(
+                  subcategoryName ? `${router}/${subcategoryName}` : `${router}`
+                )
+              }>
+              {subcategoryName || "전체"}
             </Item>
           )
         )}
       </CategoryBar>
-      {/* fix : DB에서 post불러와서 전달하기 */}
-      {/* <PostList posts={FrontsPosts} /> */}
+      {Object.keys(postList).map((category) => (
+        <PostList key={category} posts={postList[category]}></PostList>
+      ))}
       <FuncBar>
         <PostButton
           text={"글쓰기"}

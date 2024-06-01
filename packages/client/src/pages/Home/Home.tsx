@@ -1,13 +1,32 @@
 import PreviewList from "src/components/PostList/PreviewList";
 import { Box } from "./Home.style";
+import { useGetPostList } from "src/hooks/usePost";
+import { PostType, PostsByCategory } from "src/types";
+import { useEffect, useState } from "react";
+
 const Home = () => {
-  // fix : axios로 category에 따른 최신글 5~10개 받아와서 map으로 돌리기
+  const getPostList = useGetPostList();
+
+  const [postList, setPostList] = useState<PostsByCategory>({});
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const list = await getPostList();
+      if (list) {
+        setPostList(list);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return (
     <Box>
-      {/* <PreviewList category={"Front"} posts={FrontsPosts}></PreviewList>
-      <PreviewList category={"Back"} posts={BacksPosts}></PreviewList>
-      <PreviewList category={"DevOps"} posts={BacksPosts}></PreviewList>
-      <PreviewList category={"Blockchain"} posts={FrontsPosts}></PreviewList> */}
+      {Object.keys(postList).map((category) => (
+        <PreviewList
+          key={category}
+          category={category}
+          posts={postList[category]}></PreviewList>
+      ))}
     </Box>
   );
 };

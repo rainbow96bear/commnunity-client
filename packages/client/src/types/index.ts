@@ -12,13 +12,17 @@ export interface PostType {
   category: string;
   subcategory: string;
   title: string;
-  content: string;
+  content?: string;
   createdAt?: string;
   updatedAt?: string;
-  userId: string;
+  userId?: string;
   user?: {
     nickname: string;
   };
+}
+
+export interface PostsByCategory {
+  [category: string]: PostType[];
 }
 
 export interface PostDTO {

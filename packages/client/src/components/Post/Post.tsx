@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { boardRootRouter } from "src/constant/Category";
 import { RootState } from "src/store";
 import { Box, Title, Info, ContentBox, FuctionBar } from "./Post.style";
 import PostButton from "../Buttons/PostButton";
@@ -9,6 +8,7 @@ import ScrollUpButton from "../ScrollUpButton/ScrollUpButton";
 import { useSetEditPost } from "src/hooks/usePostReducer";
 import { useDeletePost } from "src/hooks/usePost";
 import { PostType } from "src/types";
+import { boardRoot } from "src/constant";
 
 interface PostProps {
   post: PostType | null;
@@ -44,9 +44,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
       <Info>
         <div
           onClick={() =>
-            navigate(
-              boardRootRouter + "/" + post?.category + "/" + post?.subcategory
-            )
+            navigate(`${boardRoot}/${post?.category}/${post?.subcategory}`)
           }>
           [{post?.subcategory}]
         </div>

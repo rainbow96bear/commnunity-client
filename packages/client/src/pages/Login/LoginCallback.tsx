@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "src/components/Loading/Loading";
 import { useFetchUserInfo } from "src/hooks/useOAuth";
 import { useUpdateUserInfo } from "src/hooks/useUserInfoReducer";
 
 const LoginCallback = () => {
-  const [code, setCode] = useState("");
-  const navigate = useNavigate();
   const updateUserInfo = useUpdateUserInfo();
   const fetchUserInfo = useFetchUserInfo();
+
+  const [code, setCode] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {

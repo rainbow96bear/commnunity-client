@@ -1,6 +1,6 @@
 import axios from "axios";
-import { API_version, PostType } from "src/constant";
-import { PostDTO, PostIdResponse } from "src/types";
+import { API_version } from "src/constant";
+import { PostDTO, PostIdResponse, PostType, PostsByCategory } from "src/types";
 
 const useDeletePost = () => {
   const deletePost: (
@@ -24,14 +24,23 @@ const useDeletePost = () => {
 };
 
 const useGetPost = () => {
-  const getPost: (postId: string) => Promise<PostType | null> = async (
+  const getPost: (
+    category: string,
+    subcategory: string,
+    postId: string
+  ) => Promise<PostType | null> = async (
+    category: string,
+    subcategory: string,
     postId: string
   ) => {
     try {
       const response = (
-        await axios.get(`${API_version}/posts/${postId}`, {
-          withCredentials: true,
-        })
+        await axios.get(
+          `${API_version}/posts/${category}/${subcategory}/${postId}`,
+          {
+            withCredentials: true,
+          }
+        )
       ).data;
       return response.post;
     } catch (error) {
@@ -39,6 +48,40 @@ const useGetPost = () => {
     }
   };
   return getPost;
+};
+
+const useGetPostList = () => {
+  const getPostList: (
+    category?: string,
+    subcategory?: string,
+    page?: string
+  ) => Promise<PostsByCategory | null> = async (
+    category?: string,
+    subcategory?: string,
+    page?: string
+  ) => {
+    let requestURL = `${API_version}/posts`;
+    if (category) {
+      requestURL += `/${category}`;
+    }
+    if (subcategory) {
+      requestURL += `/${subcategory}`;
+    }
+    if (page) {
+      requestURL += `/?p=${page}`;
+    }
+    try {
+      const response = (
+        await axios.get(`${requestURL}`, {
+          withCredentials: true,
+        })
+      ).data;
+      return response.postList;
+    } catch (error) {
+      return null;
+    }
+  };
+  return getPostList;
 };
 
 const useUpdatePost = () => {
@@ -105,4 +148,10 @@ const useUploadPost = () => {
   };
   return uploadPost;
 };
-export { useDeletePost, useUpdatePost, useGetPost, useUploadPost };
+export {
+  useDeletePost,
+  useUpdatePost,
+  useGetPost,
+  useGetPostList,
+  useUploadPost,
+};
