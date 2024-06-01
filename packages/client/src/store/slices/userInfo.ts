@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserInfo } from "src/types/UserInfo";
+import { ProfileType } from "src/types";
 
 interface UserState {
-  userInfo: UserInfo;
+  userInfo: ProfileType;
 }
 
 const storedUserInfo = localStorage.getItem("userInfo");
@@ -22,7 +22,7 @@ const userInfoSlice = createSlice({
   name: "userInfo",
   initialState,
   reducers: {
-    updateUserInfo(state, action: PayloadAction<UserInfo>) {
+    updateUserInfo(state, action: PayloadAction<ProfileType>) {
       state.userInfo = action.payload;
       localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },

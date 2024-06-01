@@ -1,18 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Item } from "./PreviewList.style";
 import { boardRootRouter } from "src/constant/Category";
-
-interface Post {
-  id: number;
-  category: string;
-  subCategory: string;
-  title: string;
-  content: string;
-}
+import { PostType } from "src/types";
 
 interface PreviewList {
   category: string;
-  posts: Post[];
+  posts: PostType[];
 }
 const PreviewList: React.FC<PreviewList> = ({ category, posts }) => {
   const navigate = useNavigate();
@@ -24,10 +17,10 @@ const PreviewList: React.FC<PreviewList> = ({ category, posts }) => {
           <div
             onClick={() =>
               navigate(
-                boardRootRouter + "/" + category + "/" + post.subCategory
+                boardRootRouter + "/" + category + "/" + post.subcategory
               )
             }>
-            {"[" + post.subCategory + "]"}
+            {"[" + post.subcategory + "]"}
           </div>
           <div
             onClick={() =>
@@ -36,7 +29,7 @@ const PreviewList: React.FC<PreviewList> = ({ category, posts }) => {
                   "/" +
                   category +
                   "/" +
-                  post.subCategory +
+                  post.subcategory +
                   "/" +
                   post.id
               )

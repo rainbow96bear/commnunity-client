@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -16,41 +16,43 @@ import {
   ItemBoxUnderLine,
   NicknameInput,
   WalletInput,
+  EmptyWalletAddress,
 } from "./Profile.style";
-import { AppDispatch, RootState } from "src/store";
-import { updateUserInfo } from "src/store/slices/userInfo";
-import axios from "axios";
-import { UserInfo } from "src/types/UserInfo";
+import { RootState } from "src/store";
+import { useGetProfile, useUpdateProfile } from "src/hooks/useProfile";
+import { useUpdateUserInfo } from "src/hooks/useUserInfoReducer";
+import { ProfileType } from "src/types";
 
 const Profile = () => {
-  const { id } = useParams();
+  const { userId } = useParams();
   const LoginUserInfo = useSelector(
     (state: RootState) => state.userInfo.userInfo
   );
-  const dispatch = useDispatch<AppDispatch>();
   const [isEditMode, setIsEditMode] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  const [userInfo, setUserInfo] = useState<ProfileType | null>(null);
+
   const [editedProfileImg, setEditedProfileImg] = useState<File | null>(null);
   const [editedNickname, setEditedNickname] = useState<string>("");
   const [editedWallet, setEditedWallet] = useState<string>("");
 
+  const getProfile = useGetProfile();
+  const updateProfile = useUpdateProfile();
+  const updateUserInfo = useUpdateUserInfo();
+
   useEffect(() => {
     const fetchUserInfo = async () => {
-      const response = (
-        await axios.get(
-          process.env.REACT_APP_API_VERSION + `/userinfos/${id}`,
-          {
-            withCredentials: true,
-          }
-        )
-      ).data;
-      const resUserInfo = response.userInfo;
-      setUserInfo(resUserInfo);
-      setEditedNickname(resUserInfo.nickname);
-      setEditedWallet(resUserInfo.wallet);
+      if (userId) {
+        const profile = await getProfile(userId);
+        if (profile) {
+          setUserInfo(profile);
+          setEditedNickname(profile.nickname);
+          setEditedWallet(profile.wallet || "");
+        }
+      }
     };
     fetchUserInfo();
-  }, [dispatch, id]);
+  }, [userId]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -78,10 +80,7 @@ const Profile = () => {
       alert("닉네임을 입력해주세요.");
       return;
     }
-    if (!editedWallet) {
-      alert("지갑 주소를 입력해주세요.");
-      return;
-    }
+
     const formData = new FormData();
 
     if (editedProfileImg) {
@@ -90,25 +89,16 @@ const Profile = () => {
 
     formData.append("nickname", editedNickname);
     formData.append("wallet", editedWallet);
-    formData.append("id", id!);
+    formData.append("userId", userId!);
 
-    try {
-      const result = (
-        await axios.put(
-          process.env.REACT_APP_API_VERSION + `/userinfos/${id}`,
-          formData,
-          {
-            withCredentials: true,
-          }
-        )
-      ).data;
-      dispatch(updateUserInfo(result.userInfo));
-      setUserInfo(result.userInfo);
-      alert("프로필이 성공적으로 저장되었습니다!");
-      setIsEditMode(false);
-    } catch (error) {
-      console.error("프로필 저장에 실패했습니다:", error);
-      alert("프로필 저장에 실패했습니다. 다시 시도해주세요.");
+    if (userId) {
+      const profile = await updateProfile(userId, formData);
+      if (profile) {
+        updateUserInfo(profile);
+        setUserInfo(profile);
+        alert("프로필이 성공적으로 저장되었습니다!");
+        setIsEditMode(false);
+      }
     }
   };
 
@@ -162,13 +152,16 @@ const Profile = () => {
           </ItemBoxUnderLine>
           <ItemBoxUnderLine>
             <WalletLabel>Wallet Address</WalletLabel>
-            <WalletAddress>
-              {userInfo?.wallet || "wallet 주소를 추가해주세요"}
-            </WalletAddress>
+            {userInfo?.wallet ? (
+              <WalletAddress>{userInfo?.wallet}</WalletAddress>
+            ) : (
+              <EmptyWalletAddress>
+                wallet 주소를 추가해주세요
+              </EmptyWalletAddress>
+            )}
           </ItemBoxUnderLine>
         </>
       )}
-      {/* fix : id 값과 로그인 된 id 가 같으면 아래 내용을 띄운다 */}
       {LoginUserInfo.id == userInfo?.id && (
         <EditBox>
           {isEditMode ? (

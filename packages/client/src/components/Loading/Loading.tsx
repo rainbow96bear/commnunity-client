@@ -1,10 +1,11 @@
 import { PacmanLoader } from "react-spinners";
 import { Box } from "./Loading.style";
+import { color_3db } from "src/constant";
 
 const Loading = () => {
   return (
     <Box>
-      <PacmanLoader color="#36d7b7"></PacmanLoader>
+      <PacmanLoader color={color_3db}></PacmanLoader>
     </Box>
   );
 };

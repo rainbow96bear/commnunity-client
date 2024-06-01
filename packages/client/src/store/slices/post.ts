@@ -1,11 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Post } from "src/types/Post";
+import { PostType } from "src/types";
 
 interface PostState {
-  post: Post;
+  post: PostType;
+  editPost: PostType;
 }
 
 const initialState: PostState = {
+  editPost: {
+    id: "",
+    category: "",
+    subcategory: "",
+    title: "",
+    content: "",
+    createdAt: "",
+    userId: "",
+    user: {
+      nickname: "",
+    },
+  },
   post: {
     id: "",
     category: "",
@@ -21,15 +34,14 @@ const initialState: PostState = {
 };
 
 const categorySlice = createSlice({
-  name: "categories",
+  name: "post",
   initialState,
   reducers: {
-    setEditPost(state, action: PayloadAction<Post>) {
-      console.log(action.payload);
-      state.post = action.payload;
+    setEditPost(state, action: PayloadAction<PostType>) {
+      state.editPost = action.payload;
     },
     clearEditPost(state) {
-      state.post = initialState.post;
+      state.editPost = initialState.post;
     },
   },
 });

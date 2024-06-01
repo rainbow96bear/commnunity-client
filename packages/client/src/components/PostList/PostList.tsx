@@ -8,19 +8,10 @@ import {
   ListItem,
 } from "./PostList.style";
 import { boardRootRouter } from "src/constant/Category";
-
-interface Post {
-  id: number;
-  category: string;
-  subCategory: string;
-  title: string;
-  content: string;
-  writer: string;
-  time: string;
-}
+import { PostType } from "src/types";
 
 interface PostsList {
-  posts: Post[];
+  posts: PostType[];
 }
 
 const PostList: React.FC<PostsList> = ({ posts }) => {
@@ -42,14 +33,14 @@ const PostList: React.FC<PostsList> = ({ posts }) => {
                   "/" +
                   post.category +
                   "/" +
-                  post.subCategory +
+                  post.subcategory +
                   "/" +
                   post.id
               )
             }>
             {post.title}
           </Title>
-          <Writer>{post.writer}</Writer>
+          <Writer>{post.user?.nickname}</Writer>
         </ListItem>
       ))}
     </Box>

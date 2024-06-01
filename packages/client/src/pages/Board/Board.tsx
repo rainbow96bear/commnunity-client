@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import {
   Box,
   Category,
@@ -11,18 +10,19 @@ import {
   SelectedItem,
 } from "./Board.style";
 import { boardRootRouter } from "src/constant/Category";
-import { FrontsPosts } from "src/constant/DummyPostList";
 import PostList from "src/components/PostList/PostList";
 import { RootState } from "src/store";
 import Post from "src/components/Post/Post";
-import { Post as PostType } from "src/types/Post";
 import PostButton from "src/components/Buttons/PostButton";
+import { useGetPost } from "src/hooks/usePost";
+import { PostType } from "src/constant";
 
 const Board = () => {
-  const { category, skill, id } = useParams<{
+  const getPost = useGetPost();
+  const { category, skill, postId } = useParams<{
     category: string;
     skill?: string;
-    id?: string;
+    postId?: string;
   }>();
   const navigate = useNavigate();
   const router = boardRootRouter + "/" + category + "/";
@@ -44,26 +44,17 @@ const Board = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      try {
-        const response = (
-          await axios.get(`${process.env.REACT_APP_API_VERSION}/posts/${id}`, {
-            withCredentials: true,
-          })
-        ).data;
-        setPost(response);
-      } catch (error) {
-        console.error("Error fetching post:", error);
-        setPost(null);
+      if (postId) {
+        const post = await getPost(postId);
+        setPost(post);
       }
     };
-    if (id !== undefined) {
-      fetchPost();
-    }
-  }, [id]);
+    fetchPost();
+  }, [postId]);
 
   return (
     <Box>
-      {id !== undefined && post && <Post post={post} />}
+      {postId !== undefined && post && <Post post={post} />}
       <Category>{category + "'s"}</Category>
       <CategoryBar>
         {[undefined, ...skills].map((skillName, idx) =>
@@ -82,7 +73,8 @@ const Board = () => {
           )
         )}
       </CategoryBar>
-      <PostList posts={FrontsPosts} />
+      {/* fix : DB에서 post불러와서 전달하기 */}
+      {/* <PostList posts={FrontsPosts} /> */}
       <FuncBar>
         <PostButton
           text={"글쓰기"}

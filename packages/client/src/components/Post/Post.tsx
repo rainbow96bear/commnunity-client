@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+
 import { boardRootRouter } from "src/constant/Category";
-import { Post as PostType } from "src/types/Post";
-import { AppDispatch, RootState } from "src/store";
-import ScrollUpButton from "shared/dist/Components/ScrollUpButton";
+import { RootState } from "src/store";
 import { Box, Title, Info, ContentBox, FuctionBar } from "./Post.style";
 import PostButton from "../Buttons/PostButton";
-import { setEditPost } from "src/store/slices/post";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import ScrollUpButton from "../ScrollUpButton/ScrollUpButton";
+import { useSetEditPost } from "src/hooks/usePostReducer";
+import { useDeletePost } from "src/hooks/usePost";
+import { PostType } from "src/types";
 
 interface PostProps {
   post: PostType | null;
@@ -16,40 +16,25 @@ interface PostProps {
 
 const Post: React.FC<PostProps> = ({ post }) => {
   const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-  const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const deletePost = useDeletePost();
+  const setEditPost = useSetEditPost();
 
   const handleEditClick = () => {
     if (post) {
-      dispatch(setEditPost(post));
+      setEditPost(post);
     }
     navigate(`/board/editpost/${post?.id}`);
   };
 
   const handleDeleteClick = async () => {
-    try {
-      const result = (
-        await axios.delete(
-          `${process.env.REACT_APP_API_VERSION}/posts/${post?.id}`,
-          {
-            data: {
-              id: userInfo.id,
-            },
-            withCredentials: true,
-          }
-        )
-      ).data;
-      console.log(result);
-      // window.location.href = "http://localhost:3000/NotFound";
-      navigate(`/NotFound`);
-      // console.log(result.data);
-      // if (result.data.success) {
-      // } else {
-      //   console.error("Post deletion failed.");
-      // }
-    } catch (error) {
-      console.error("Error deleting post:", error);
+    const postId = post?.id;
+    const userId = userInfo.id;
+    if (postId) {
+      const success = await deletePost(postId, userId);
+      if (success) {
+        navigate(-1);
+      }
     }
   };
 
