@@ -92,6 +92,10 @@ export const WalletAddress = styled.div`
   ${WalletAddressStyle}
 `;
 
+export const EmptyWalletAddress = styled(WalletAddress)`
+  color: gray;
+`;
+
 export const WalletInput = styled(TextInput)`
   ${WalletAddressStyle}
 `;

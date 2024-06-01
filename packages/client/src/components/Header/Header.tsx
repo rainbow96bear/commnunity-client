@@ -1,25 +1,22 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
+import { useDeleteUserInfo } from "src/hooks/useUserInfoReducer";
 import { Box, FuncBox, LogButton, ProfileImg, Title } from "./Header.style";
 import logo from "../../assets/logo.png";
-import { AppDispatch, RootState } from "src/store";
-import { deleteUserInfo } from "src/store/slices/userInfo";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const deleteUserInfo = useDeleteUserInfo();
   const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
   const handleLogin = () => {
     navigate("/login");
   };
 
   const handleLogout = () => {
-    dispatch(deleteUserInfo());
+    deleteUserInfo();
     navigate("/");
-    // window.location.href = "http://localhost:3000";
   };
-  useEffect(() => {}, [userInfo]);
   return (
     <Box>
       <Title onClickCapture={() => navigate("/")}>

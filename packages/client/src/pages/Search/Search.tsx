@@ -5,7 +5,7 @@ import { FrontsPosts } from "src/constant/DummyPostList";
 import Post from "src/components/Post/Post";
 import PostList from "src/components/PostList/PostList";
 import { useSearchParams } from "react-router-dom";
-import { Post as PostType } from "src/types/Post";
+import { PostType } from "src/types";
 
 const Search = () => {
   const [searchParams] = useSearchParams();

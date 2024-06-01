@@ -15,15 +15,16 @@ import NotFound from "./pages/NotFound/NotFound";
 import Profile from "./pages/Profile/Profile";
 import Search from "./pages/Search/Search";
 import WritePost from "./pages/WritePost/WritePost";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "./store";
+import {
+  editPost,
+  newPost,
+  posts,
+  postsSkill,
+  profile,
+  search,
+} from "./constant";
 
 const App = () => {
-  const userInfo = useSelector((state: RootState) => state.userInfo.userInfo);
-  useEffect(() => {
-    // console.log(userInfo);
-  }, [userInfo]);
   return (
     <div className="App">
       <Header />
@@ -39,20 +40,14 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/board/posts" element={<NotFound />} />
-              <Route
-                path="/board/posts/:category/:skill?"
-                element={<Board />}
-              />
+              <Route path={posts} element={<Board />} />
               <Route element={<PrivateRoutes />}>
-                <Route
-                  path="/board/posts/:category/:skill/:id"
-                  element={<Board />}
-                />
-                <Route path="/board/newpost" element={<WritePost />} />
-                <Route path="/board/editpost/:postId" element={<WritePost />} />
-                <Route path="/profile/:id" element={<Profile />} />
+                <Route path={postsSkill} element={<Board />} />
+                <Route path={newPost} element={<WritePost />} />
+                <Route path={editPost} element={<WritePost />} />
+                <Route path={profile} element={<Profile />} />
               </Route>
-              <Route path="/search" element={<Search />} />
+              <Route path={search} element={<Search />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </MainBox>
