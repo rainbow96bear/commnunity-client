@@ -15,18 +15,3 @@ export const editPost = `${boardRoot}/editpost/:postId`;
 export const profile = `profile/:userId`;
 
 export const search = `/search`;
-
-// type
-export interface PostType {
-  id: string;
-  category: string;
-  subcategory: string;
-  title: string;
-  content: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userId: string;
-  user?: {
-    nickname: string;
-  };
-}
