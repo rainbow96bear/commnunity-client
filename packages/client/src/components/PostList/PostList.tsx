@@ -7,8 +7,8 @@ import {
   Writer,
   ListItem,
 } from "./PostList.style";
-import { boardRootRouter } from "src/constant/Category";
 import { PostType } from "src/types";
+import { postRoute } from "src/constant";
 
 interface PostsList {
   posts: PostType[];
@@ -29,13 +29,7 @@ const PostList: React.FC<PostsList> = ({ posts }) => {
           <Title
             onClick={() =>
               navigate(
-                boardRootRouter +
-                  "/" +
-                  post.category +
-                  "/" +
-                  post.subcategory +
-                  "/" +
-                  post.id
+                `${postRoute}/${post.category}/${post.category}/${post.subcategory}/${post.id}`
               )
             }>
             {post.title}

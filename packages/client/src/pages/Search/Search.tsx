@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Box, Category } from "./Search.style";
-import { boardRootRouter } from "src/constant/Category";
-import { FrontsPosts } from "src/constant/DummyPostList";
 import Post from "src/components/Post/Post";
 import PostList from "src/components/PostList/PostList";
 import { useSearchParams } from "react-router-dom";
