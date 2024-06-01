@@ -1,8 +1,8 @@
 {
-  "name": "ITs-client",
+  "name": "community-client",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/rainbow96bear/ITs-client.git",
+  "repository": "https://github.com/rainbow96bear/community-client.git",
   "author": "Kim Sung Jin <rainbow96bear@gmail.com>",
   "license": "MIT",
   "private": "true",
