@@ -1,0 +1,7 @@
+node_modules/
+dist/
+./packages/client/node_modules/
+./packages/client/build/
+
+./packages/shared/node_modules/
+./packages/shared/build/
