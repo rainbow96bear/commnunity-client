@@ -16,7 +16,7 @@ const CategoryBar = () => {
   return (
     <Box>
       <Items>
-        {categories.map((category, idx) => (
+        {categories?.map((category, idx) => (
           <div key={idx}>
             <Item onClick={() => navigate(`${postRoute}/${category.category}`)}>
               {category.category}
