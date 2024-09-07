@@ -52,5 +52,8 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
             sudo docker stop community-client || true
             sudo docker rm community-client || true
-            sudo docker run -d --name community-client -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
-            
+            sudo docker run -d --name community-client -p 80:80 \
+              -e REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.REACT_APP_KAKAO_RESTFUL_API_KEY }} \
+              -e REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }} \
+              -e REACT_APP_BASE_PROFILE_IMG=${{ secrets.REACT_APP_BASE_PROFILE_IMG }} \
+              ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
