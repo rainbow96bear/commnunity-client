@@ -19,13 +19,24 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Login to Docker Hub
+      - name: Set up environment variables for build
         run: |
-          echo ${{ secrets.DOCKER_HUB_PW }} | docker login -u ${{ secrets.DOCKER_HUB_ID }} --password-stdin
+          echo "REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }}" > .env
+          echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}" >> .env
+          echo "REACT_APP_BASE_PROFILE_IMG=${{ secrets.REACT_APP_BASE_PROFILE_IMG }}" >> .env
+
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKER_HUB_PW }} | docker login -u ${{ secrets.DOCKER_HUB_ID }} --password-stdin
 
       - name: Build Docker image
-        run: |
-          docker build --platform linux/amd64 -t community-client .
+        run: docker build --platform linux/amd64 -t community-client .
 
       - name: Tag and Push Docker image
         run: |
@@ -53,7 +64,5 @@ jobs:
             sudo docker stop community-client || true
             sudo docker rm community-client || true
             sudo docker run -d --name community-client -p 80:80 \
-              -e REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.REACT_APP_KAKAO_RESTFUL_API_KEY }} \
-              -e REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }} \
-              -e REACT_APP_BASE_PROFILE_IMG=${{ secrets.REACT_APP_BASE_PROFILE_IMG }} \
+              
               ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
