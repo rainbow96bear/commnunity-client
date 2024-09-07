@@ -52,5 +52,5 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
             sudo docker stop community-client || true
             sudo docker rm community-client || true
-            sudo docker run -d --name community-client -p 22:22 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
+            sudo docker run -d --name community-client -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
             
