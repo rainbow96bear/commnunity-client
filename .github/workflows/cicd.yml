@@ -25,7 +25,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --build-arg BACKEND_URL=${{ secrets.EC2_HOST }} --platform linux/amd64 -t community-client .
+          docker build --platform linux/amd64 -t community-client .
 
       - name: Tag and Push Docker image
         run: |
