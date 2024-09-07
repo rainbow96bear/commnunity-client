@@ -23,8 +23,8 @@ jobs:
         run: |
           docker build --platform linux/amd64 \
             --build-arg REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
-            --build-arg REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }} \
-            --build-arg REACT_APP_BASE_PROFILE_IMG=${{ secrets.REACT_APP_BASE_PROFILE_IMG }} \
+            --build-arg REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+            --build-arg REACT_APP_BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} \
             -t community-client .
 
       - name: Login to Docker Hub
