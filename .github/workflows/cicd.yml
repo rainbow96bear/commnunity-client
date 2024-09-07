@@ -2,9 +2,9 @@ name: Deploy React App
 
 on:
   push:
-    branches: [ "master" ]  # 배포할 브랜치 이름
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -17,40 +17,29 @@ jobs:
       - name: Use Node.js 18.x
         uses: actions/setup-node@v2
         with:
-          node-version: '18.x'
+          node-version: "18.x"
 
       - name: Set up environment variables for build
         run: |
-          echo "REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }}" > .env
-          echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}" >> .env
-          echo "REACT_APP_BASE_PROFILE_IMG=${{ secrets.REACT_APP_BASE_PROFILE_IMG }}" >> .env
-
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Build
-        run: yarn build
+          docker build --platform linux/amd64 \
+            --build-arg REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
+            --build-arg REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }} \
+            --build-arg REACT_APP_BASE_PROFILE_IMG=${{ secrets.REACT_APP_BASE_PROFILE_IMG }} \
+            -t community-client .
 
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKER_HUB_PW }} | docker login -u ${{ secrets.DOCKER_HUB_ID }} --password-stdin
-
-      - name: Build Docker image
-        run: docker build --platform linux/amd64 -t community-client .
 
       - name: Tag and Push Docker image
         run: |
           docker tag community-client ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
           docker push ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
-  
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3.3.0
-
       - name: Deploy Docker container
         uses: appleboy/ssh-action@master
         with:
@@ -63,6 +52,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
             sudo docker stop community-client || true
             sudo docker rm community-client || true
-            sudo docker run -d --name community-client -p 80:80 \
-              
-              ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
+            sudo docker run -d --name community-client -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
