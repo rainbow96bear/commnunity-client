@@ -49,7 +49,7 @@ jobs:
             sudo docker stop community-client || true
             sudo docker rm community-client || true
             sudo docker run -d --name community-client --network host \
-            -e KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
-            -e KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
-            -e BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} \
+            -e REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
+            -e REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+            -e REACT_APP_BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} \
             -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
