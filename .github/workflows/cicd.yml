@@ -21,11 +21,7 @@ jobs:
 
       - name: Set up environment variables for build
         run: |
-          docker build --platform linux/amd64 \
-            --build-arg KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
-            --build-arg KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
-            --build-arg BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} \
-            -t community-client .
+          docker build --platform linux/amd64 -t community-client .
 
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKER_HUB_PW }} | docker login -u ${{ secrets.DOCKER_HUB_ID }} --password-stdin
@@ -52,4 +48,8 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
             sudo docker stop community-client || true
             sudo docker rm community-client || true
-            sudo docker run -d --name community-client --network host -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
+            sudo docker run -d --name community-client --network host \
+            -e KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
+            -e KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+            -e BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} \
+            -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
