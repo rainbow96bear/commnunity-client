@@ -21,7 +21,11 @@ jobs:
 
       - name: Set up environment variables for build
         run: |
-          docker build --platform linux/amd64 -t community-client .
+          docker build --platform linux/amd64 \
+            --build-arg REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
+            --build-arg REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
+            --build-arg REACT_APP_BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} \
+            -t community-client .
 
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKER_HUB_PW }} | docker login -u ${{ secrets.DOCKER_HUB_ID }} --password-stdin
