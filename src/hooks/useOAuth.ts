@@ -3,6 +3,10 @@ import { API_version } from "src/constant";
 import { ProfileType } from "src/types";
 
 const useGetOAuthURL = () => {
+  alert(
+    `client_id=${process.env.REACT_APP_KAKAO_RESTFUL_API_KEY}
+    &redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`
+  );
   const getOAuthURL = (platform: string) => {
     let OAuthURL = "";
     switch (platform) {
