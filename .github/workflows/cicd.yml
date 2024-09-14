@@ -54,8 +54,7 @@ jobs:
             sudo docker run -d --name community-client --network host \
             -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
 
-    steps:
-      - name: docker prun
+      - name: docker prune
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
