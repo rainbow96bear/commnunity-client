@@ -29,7 +29,7 @@ const PostList: React.FC<PostsList> = ({ posts }) => {
           <Title
             onClick={() =>
               navigate(
-                `${postRoute}/${post.category}/${post.category}/${post.subcategory}/${post.id}`
+                `${postRoute}/${post.category}/${post.subcategory}/${post.id}`
               )
             }>
             {post.title}
