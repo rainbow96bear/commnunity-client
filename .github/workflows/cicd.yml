@@ -21,7 +21,7 @@ jobs:
 
       - name: Set up environment variables for build
         run: |
-          docker build --platform linux/amd64 -t community-client \
+          docker build --no-cache --platform linux/amd64 -t community-client \
           --build-arg REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} \
           --build-arg REACT_APP_KAKAO_RESTFUL_API_KEY=${{ secrets.KAKAO_RESTFUL_API_KEY }} \
           --build-arg REACT_APP_BASE_PROFILE_IMG=${{ secrets.BASE_PROFILE_IMG }} .
@@ -53,3 +53,18 @@ jobs:
             sudo docker rm community-client || true
             sudo docker run -d --name community-client --network host \
             -p 80:80 ${{ secrets.DOCKER_HUB_ID }}/community-client:latest
+
+    steps:
+      - name: docker prun
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            echo ${{ secrets.DOCKER_HUB_PW }} | sudo docker login -u ${{ secrets.DOCKER_HUB_ID }} --password-stdin
+            sudo docker system prune -a --volumes
+            sudo docker image prune -a
+            sudo docker container prune
+            sudo docker volume prune
