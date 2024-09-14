@@ -27,11 +27,14 @@ const PostList: React.FC<PostsList> = ({ posts }) => {
         <ListItem key={idx}>
           <Number>{post.id}</Number>
           <Title
-            onClick={() =>
+            onClick={() => {
+              alert(
+                `${postRoute}/${post.category}/${post.subcategory}/${post.id}`
+              );
               navigate(
                 `${postRoute}/${post.category}/${post.subcategory}/${post.id}`
-              )
-            }>
+              );
+            }}>
             {post.title}
           </Title>
           <Writer>{post.user?.nickname}</Writer>
