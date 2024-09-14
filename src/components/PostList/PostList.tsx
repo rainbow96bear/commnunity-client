@@ -28,9 +28,6 @@ const PostList: React.FC<PostsList> = ({ posts }) => {
           <Number>{post.id}</Number>
           <Title
             onClick={() => {
-              alert(
-                `${postRoute}/${post.category}/${post.subcategory}/${post.id}`
-              );
               navigate(
                 `${postRoute}/${post.category}/${post.subcategory}/${post.id}`
               );
