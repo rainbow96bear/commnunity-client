@@ -3,7 +3,6 @@ FROM node:18-alpine as builder
 ARG REACT_APP_KAKAO_REDIRECT_URI
 ARG REACT_APP_KAKAO_RESTFUL_API_KEY
 ARG REACT_APP_BASE_PROFILE_IMG
-ARG NGINX_CONFIG
 
 RUN mkdir /community-client
 WORKDIR /community-client
@@ -16,25 +15,15 @@ COPY . .
 RUN REACT_APP_KAKAO_REDIRECT_URI=$REACT_APP_KAKAO_REDIRECT_URI \
     REACT_APP_KAKAO_RESTFUL_API_KEY=$REACT_APP_KAKAO_RESTFUL_API_KEY \
     REACT_APP_BASE_PROFILE_IMG=$REACT_APP_BASE_PROFILE_IMG \
-    NGINX_CONFIG=$NGINX_CONFIG\
     yarn build
 
 FROM nginx
 
+ARG NGINX_CONF=production.conf
+
 EXPOSE 80
 
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/${NGINX_CONF} /etc/nginx/conf.d/default.conf
 COPY --from=builder /community-client/build /usr/share/nginx/html
-
-CMD ["nginx", "-g", "daemon off;"]
-
-FROM nginx
-
-EXPOSE 80
-
-
-
-# 기본적으로 default.conf를 사용하고, ARG에 따라 변경 가능
-COPY ./nginx/${NGINX_CONFIG} /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
