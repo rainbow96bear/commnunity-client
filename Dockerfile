@@ -25,3 +25,16 @@ COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /community-client/build /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
+
+FROM nginx
+
+EXPOSE 80
+
+# Nginx 설정 파일을 동적으로 선택하기 위해 ENV 사용
+ARG NGINX_CONFIG
+ENV NGINX_CONFIG=${NGINX_CONFIG}
+
+# 기본적으로 default.conf를 사용하고, ARG에 따라 변경 가능
+COPY ./nginx/${NGINX_CONFIG} /etc/nginx/conf.d/default.conf
+
+CMD ["nginx", "-g", "daemon off;"]
