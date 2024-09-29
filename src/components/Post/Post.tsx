@@ -56,7 +56,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         <ScrollUpButton
           width={30}
           height={30}
-          fontSize={30}
+          fontSize={1.875}
           color={"lightblue"}
         />
         <PostButton

@@ -14,7 +14,7 @@ export const SelectInput = styled.select`
   padding: 12px;
   border: 1px solid #d32f2f;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 0.8rem;
   background-color: #fff;
   appearance: none;
   outline: none;
@@ -38,7 +38,7 @@ export const TitleInput = styled.input`
   padding: 12px;
   border: 1px solid #d32f2f;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 0.8rem;
   background-color: #fff;
   outline: none;
 
@@ -56,7 +56,7 @@ export const ContentInput = styled.textarea`
   padding: 12px;
   border: 1px solid #d32f2f;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 0.8rem;
   background-color: #fff;
   min-height: 200px;
   resize: vertical;
@@ -78,7 +78,7 @@ export const Button = styled.button`
   border-radius: 5px;
   background-color: #d32f2f;
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -88,7 +88,7 @@ export const Button = styled.button`
 `;
 
 export const ErrorText = styled.p`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #d32f2f;
   margin-top: -10px;
   margin-bottom: 5px;

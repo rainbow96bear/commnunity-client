@@ -15,7 +15,7 @@ export const StyledButton = styled.div<StyledButtonProps>`
   height: ${(props) => props.height}px;
   background-color: white;
   color: ${(props) => props.color};
-  font-size: ${(props) => props.fontSize}px;
+  font-size: ${(props) => props.fontSize}rem;
   border-radius: 50%;
   cursor: pointer;
 `;
